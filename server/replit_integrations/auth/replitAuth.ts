@@ -50,7 +50,7 @@ function updateUserSession(
   user.expires_at = user.claims?.exp;
 }
 
-async function upsertUser(claims: any) {
+async function upsertUser(claims: any, user: any) {
   const userId = claims["sub"];
   const email = claims["email"];
   
@@ -68,7 +68,7 @@ async function upsertUser(claims: any) {
 
   // Store permissions in session if needed
   if (adminPerms) {
-    (user as any).permissions = adminPerms;
+    user.permissions = adminPerms;
   }
 }
 
@@ -86,7 +86,7 @@ export async function setupAuth(app: Express) {
   ) => {
     const user = {};
     updateUserSession(user, tokens);
-    await upsertUser(tokens.claims());
+    await upsertUser(tokens.claims(), user);
     verified(null, user);
   };
 
