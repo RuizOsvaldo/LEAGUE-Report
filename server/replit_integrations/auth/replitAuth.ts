@@ -54,8 +54,8 @@ async function upsertUser(claims: any) {
   const userId = claims["sub"];
   const email = claims["email"];
   
-  // Check if this user should be an admin
-  const isAdmin = await authStorage.isAdmin(email);
+  // Check if this user should be an admin and get their permissions
+  const adminPerms = await authStorage.getAdminPermissions(email);
   
   await authStorage.upsertUser({
     id: userId,
@@ -63,8 +63,13 @@ async function upsertUser(claims: any) {
     firstName: claims["first_name"],
     lastName: claims["last_name"],
     profileImageUrl: claims["profile_image_url"],
-    isAdmin: isAdmin,
+    isAdmin: !!adminPerms,
   });
+
+  // Store permissions in session if needed
+  if (adminPerms) {
+    (user as any).permissions = adminPerms;
+  }
 }
 
 export async function setupAuth(app: Express) {

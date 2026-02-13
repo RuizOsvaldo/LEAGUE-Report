@@ -9,6 +9,7 @@ export interface IAuthStorage {
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   isAdmin(email: string | null | undefined): Promise<boolean>;
+  getAdminPermissions(email: string | null | undefined): Promise<any>;
 }
 
 class AuthStorage implements IAuthStorage {
@@ -39,6 +40,15 @@ class AuthStorage implements IAuthStorage {
       .from(adminSettings)
       .where(eq(adminSettings.adminUserId, email));
     return !!setting;
+  }
+
+  async getAdminPermissions(email: string | null | undefined): Promise<any> {
+    if (!email) return null;
+    const [setting] = await db
+      .select()
+      .from(adminSettings)
+      .where(eq(adminSettings.adminUserId, email));
+    return setting || null;
   }
 }
 

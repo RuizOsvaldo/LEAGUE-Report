@@ -141,6 +141,9 @@ export const instructorConfig = pgTable("instructor_config", {
 export const adminSettings = pgTable("admin_settings", {
   id: serial("id").primaryKey(),
   adminUserId: varchar("admin_user_id").notNull().unique(),
+  canManageTemplates: boolean("can_manage_templates").notNull().default(true),
+  canManageInstructors: boolean("can_manage_instructors").notNull().default(true),
+  canViewCompliance: boolean("can_view_compliance").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
