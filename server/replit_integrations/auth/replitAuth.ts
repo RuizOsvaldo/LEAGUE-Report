@@ -51,12 +51,19 @@ function updateUserSession(
 }
 
 async function upsertUser(claims: any) {
+  const userId = claims["sub"];
+  const email = claims["email"];
+  
+  // Check if this user should be an admin
+  const isAdmin = await authStorage.isAdmin(email);
+  
   await authStorage.upsertUser({
-    id: claims["sub"],
-    email: claims["email"],
+    id: userId,
+    email: email,
     firstName: claims["first_name"],
     lastName: claims["last_name"],
     profileImageUrl: claims["profile_image_url"],
+    isAdmin: isAdmin,
   });
 }
 
