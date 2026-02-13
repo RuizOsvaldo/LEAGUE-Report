@@ -54,8 +54,11 @@ async function upsertUser(claims: any, user: any) {
   const userId = claims["sub"];
   const email = claims["email"];
   
+  // Normalize email for comparison
+  const normalizedEmail = email?.toLowerCase().trim();
+  
   // Check if this user should be an admin and get their permissions
-  const adminPerms = await authStorage.getAdminPermissions(email);
+  const adminPerms = await authStorage.getAdminPermissions(normalizedEmail);
   
   await authStorage.upsertUser({
     id: userId,

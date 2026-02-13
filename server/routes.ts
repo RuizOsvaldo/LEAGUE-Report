@@ -161,8 +161,8 @@ export async function registerRoutes(
     res.json({ ok: true, message: "Synced (stub) and refreshed assignments." });
   });
 
-  // === Admin routes ===
-  app.get(api.admin.listInstructors.path, isAuthenticated, async (req: any, res) => {
+    // === Admin routes ===
+    app.get(api.admin.listInstructors.path, isAuthenticated, async (req: any, res) => {
     const userId = req.user?.claims?.sub as string | undefined;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
     const isAdmin = await storage.isAdminUser(userId);

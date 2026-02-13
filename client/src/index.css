@@ -17,44 +17,44 @@
   --font-display: "Fraunces", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
   /* Light */
-  --background: 210 30% 98%;
-  --foreground: 222 36% 12%;
+  --background: 210 20% 98%;
+  --foreground: 222 47% 11%;
 
   --card: 0 0% 100%;
-  --card-foreground: 222 36% 12%;
-  --card-border: 220 18% 90%;
+  --card-foreground: 222 47% 11%;
+  --card-border: 214 32% 91%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 222 36% 12%;
-  --popover-border: 220 18% 90%;
+  --popover-foreground: 222 47% 11%;
+  --popover-border: 214 32% 91%;
 
-  --border: 220 18% 88%;
-  --input: 220 18% 82%;
-  --ring: 172 88% 36%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 201 90% 45%;
 
-  --muted: 210 22% 95%;
-  --muted-foreground: 216 16% 42%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
 
-  --primary: 172 88% 36%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 201 90% 45%;
+  --primary-foreground: 210 40% 98%;
 
-  --secondary: 220 20% 96%;
-  --secondary-foreground: 222 36% 14%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
 
-  --accent: 34 92% 56%;
-  --accent-foreground: 222 36% 12%;
+  --accent: 201 90% 45%;
+  --accent-foreground: 210 40% 98%;
 
-  --destructive: 0 84% 56%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
 
-  --sidebar: 210 30% 98%;
-  --sidebar-foreground: 222 36% 12%;
-  --sidebar-border: 220 18% 88%;
-  --sidebar-primary: 172 88% 36%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 220 20% 95%;
-  --sidebar-accent-foreground: 222 36% 12%;
-  --sidebar-ring: 172 88% 36%;
+  --sidebar: 210 40% 96%;
+  --sidebar-foreground: 222 47% 11%;
+  --sidebar-border: 214 32% 91%;
+  --sidebar-primary: 201 90% 45%;
+  --sidebar-primary-foreground: 210 40% 98%;
+  --sidebar-accent: 210 40% 96.1%;
+  --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+  --sidebar-ring: 201 90% 45%;
 
   /* Charts (optional) */
   --chart-1: 172 88% 36%;

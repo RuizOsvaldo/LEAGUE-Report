@@ -175,6 +175,15 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
+  async createAdminSetting(insertAdmin: { adminUserId: string }): Promise<void> {
+    await db
+      .insert(adminSettings)
+      .values({
+        adminUserId: insertAdmin.adminUserId.toLowerCase().trim(),
+      })
+      .onConflictDoNothing();
+  }
+
   async isAdminUser(userId: string): Promise<boolean> {
     const [row] = await db
       .select()
