@@ -197,11 +197,24 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(instructors)
       .where(eq(instructors.userId, userId));
-    if (existing) return existing;
+    
+    const isAdmin = await this.isAdminUser(userId);
+    
+    if (existing) {
+      if (isAdmin && !existing.isActive) {
+        const [updated] = await db
+          .update(instructors)
+          .set({ isActive: true })
+          .where(eq(instructors.id, existing.id))
+          .returning();
+        return updated;
+      }
+      return existing;
+    }
 
     const [created] = await db
       .insert(instructors)
-      .values({ userId, isActive: false })
+      .values({ userId, isActive: isAdmin })
       .returning();
     return created;
   }
