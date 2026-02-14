@@ -161,8 +161,23 @@ export async function registerRoutes(
     res.json({ ok: true, message: "Synced (stub) and refreshed assignments." });
   });
 
-    // === Admin routes ===
-    app.get(api.admin.listInstructors.path, isAuthenticated, async (req: any, res) => {
+  // === Admin routes ===
+  app.post("/api/admin/seed-admin-direct-db-access-only", async (req, res) => {
+    try {
+      const { adminUserId } = req.body;
+      console.log(`[ADMIN SEED] Received request for: ${adminUserId}`);
+      if (!adminUserId) return res.status(400).json({ message: "Missing adminUserId" });
+      const normalized = adminUserId.toLowerCase().trim();
+      await storage.createAdminSetting({ adminUserId: normalized });
+      console.log(`[ADMIN SEED] Successfully seeded: ${normalized}`);
+      res.json({ ok: true, message: `Admin ${normalized} seeded` });
+    } catch (err: any) {
+      console.error(`[ADMIN SEED] Error: ${err.message}`);
+      res.status(500).json({ message: "Failed to seed admin", error: err.message });
+    }
+  });
+
+  app.get(api.admin.listInstructors.path, isAuthenticated, async (req: any, res) => {
     const userId = req.user?.claims?.sub as string | undefined;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
     const isAdmin = await storage.isAdminUser(userId);
