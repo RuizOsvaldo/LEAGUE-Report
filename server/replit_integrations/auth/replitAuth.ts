@@ -56,11 +56,9 @@ async function upsertUser(claims: any, user: any) {
   
   // Normalize email for comparison
   const normalizedEmail = email?.toLowerCase().trim();
-  console.log(`[AUTH DEBUG] Login attempt: email="${email}", sub="${userId}"`);
   
   // Check if this user should be an admin
   const adminPerms = await authStorage.getAdminPermissions(normalizedEmail);
-  console.log(`[AUTH DEBUG] Admin status for "${normalizedEmail}": ${adminPerms ? "YES" : "NO"}`);
   
   await authStorage.upsertUser({
     id: userId,

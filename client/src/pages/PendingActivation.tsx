@@ -1,7 +1,8 @@
 import Seo from "@/components/Seo";
 import { Button } from "@/components/ui/button";
-import { Clock, LogOut, RefreshCcw } from "lucide-react";
+import { Clock, LogOut, RefreshCcw, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 
 export default function PendingActivation({
   onRefresh,
@@ -10,7 +11,8 @@ export default function PendingActivation({
   onRefresh: () => void;
   isRefreshing: boolean;
 }) {
-  const { logout, isLoggingOut } = useAuth();
+  const { user, logout, isLoggingOut } = useAuth();
+  const [, setLocation] = useLocation();
 
   return (
     <div className="min-h-screen bg-mesh grain">
@@ -38,6 +40,17 @@ export default function PendingActivation({
                   <RefreshCcw className="mr-2 h-4 w-4" />
                   {isRefreshing ? "Checking…" : "Check again"}
                 </Button>
+
+                {user?.isAdmin && (
+                  <Button
+                    variant="outline"
+                    onClick={() => setLocation("/admin")}
+                    className="rounded-2xl border-primary text-primary hover:bg-primary/5 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  >
+                    <Shield className="mr-2 h-4 w-4" />
+                    Go to Admin Dashboard
+                  </Button>
+                )}
 
                 <Button
                   variant="secondary"

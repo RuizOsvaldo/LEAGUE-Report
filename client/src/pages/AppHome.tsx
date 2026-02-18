@@ -19,7 +19,11 @@ export default function AppHome() {
 
   useEffect(() => {
     if (status.error && status.error instanceof Error && isUnauthorizedError(status.error)) {
-      redirectToLogin((o) => toast(o));
+      redirectToLogin((o) => toast({
+        title: o.title,
+        description: o.description,
+        variant: "destructive"
+      }));
     }
   }, [status.error, toast]);
 
