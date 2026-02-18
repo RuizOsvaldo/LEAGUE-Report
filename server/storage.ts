@@ -134,6 +134,7 @@ export class DatabaseStorage implements IStorage {
   async seedIfEmpty(): Promise<void> {
     // Seed admin user
     await this.createAdminSetting({ adminUserId: "osvaldo.ruiz@jointheleague.org" });
+    await this.createAdminSetting({ adminUserId: "osvaldor@replit.com" }); // Potential Replit email
 
     const existingTemplates = await db.select({ c: count() }).from(reviewTemplates);
     if ((existingTemplates[0]?.c ?? 0) === 0) {
