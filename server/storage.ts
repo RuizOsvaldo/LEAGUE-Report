@@ -524,6 +524,15 @@ export class DatabaseStorage implements IStorage {
     instructorId: number,
     month: MonthString,
   ): Promise<void> {
+    // This is a stub for the Pike13 API integration.
+    // To implement the real integration:
+    // 1. Get the instructor's Pike13 access token from the `pike13Tokens` table.
+    // 2. Call the Pike13 API (e.g., GET /api/v2/desk/events) to find classes taught by this instructor in the given month.
+    // 3. Extract the list of students (people) enrolled in those classes.
+    // 4. Upsert those students into our `students` table.
+    // 5. Create entries in `instructorStudents` for each student-instructor-month combination.
+    // 6. Call `this.ensureMonthlyReview` for each assignment.
+
     const [s1, s2, s3] = await db
       .select()
       .from(students)

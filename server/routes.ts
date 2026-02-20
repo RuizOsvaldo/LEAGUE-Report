@@ -156,6 +156,12 @@ export async function registerRoutes(
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
     const instructor = await storage.ensureInstructorForUser(userId);
 
+    // REAL INTEGRATION POINT:
+    // In a production app, you would redirect the user to Pike13's OAuth page here
+    // if you don't already have a valid token for them.
+    // Once the token is obtained and stored in the `pike13_tokens` table,
+    // this endpoint would use that token to fetch real data from Pike13.
+
     const month = storage.normalizeMonth();
     await storage.seedAssignmentsForInstructor(instructor.id, month);
     res.json({ ok: true, message: "Synced (stub) and refreshed assignments." });
