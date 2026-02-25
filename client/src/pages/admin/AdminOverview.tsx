@@ -33,7 +33,7 @@ export default function AdminOverview() {
 
   return (
     <AppShell variant="admin">
-      <Seo title={`Admin Overview — ${monthLabel(month)} | LEAGUE Reviews`} description="Admin overview for activation and compliance." />
+      <Seo title={`Admin Overview — ${monthLabel(month)} | JTL Reviews`} description="Admin overview for activation and compliance." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">

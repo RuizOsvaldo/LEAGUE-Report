@@ -138,13 +138,13 @@ export default function AppShell({
                     <div className="flex items-center gap-3">
                       <div className="relative grid h-10 w-10 place-items-center rounded-2xl border bg-gradient-to-br from-primary/20 via-accent/10 to-transparent shadow-sm">
                         <span className="font-display text-lg" aria-hidden>
-                          Λ
+                          J
                         </span>
                         <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/10" />
                       </div>
                       <div className="leading-tight">
                         <div className="font-display text-base" data-testid="app-brand-title">
-                          LEAGUE Reviews
+                          JTL Reviews
                         </div>
                         <div className="text-xs text-muted-foreground" data-testid="app-brand-subtitle">
                           Monthly progress, beautifully tracked

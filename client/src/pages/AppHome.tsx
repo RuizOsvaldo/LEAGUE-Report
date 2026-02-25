@@ -40,7 +40,7 @@ export default function AppHome() {
   if (status.isLoading) {
     return (
       <div className="min-h-screen bg-mesh grain">
-        <Seo title="Loading — LEAGUE Reviews" />
+        <Seo title="Loading — JTL Reviews" />
         <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="glass rounded-[2rem] p-7 shadow-soft animate-in">
             <div className="h-6 w-52 rounded-xl bg-muted animate-pulse" />
@@ -63,7 +63,7 @@ export default function AppHome() {
   // Active user: provide a welcoming choice (instructor vs admin).
   return (
     <div className="min-h-screen bg-mesh grain">
-      <Seo title="Home — LEAGUE Reviews" description="Choose your workspace." />
+      <Seo title="Home — JTL Reviews" description="Choose your workspace." />
       <AppShell variant={roleGuess}>
         <div className="animate-in">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">

@@ -48,7 +48,7 @@ export default function AdminInstructors() {
 
   return (
     <AppShell variant="admin">
-      <Seo title="Admin — Instructors | LEAGUE Reviews" description="Activate or deactivate instructor accounts." />
+      <Seo title="Admin — Instructors | JTL Reviews" description="Activate or deactivate instructor accounts." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">

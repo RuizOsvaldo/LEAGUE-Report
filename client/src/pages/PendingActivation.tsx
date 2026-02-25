@@ -16,7 +16,7 @@ export default function PendingActivation({
 
   return (
     <div className="min-h-screen bg-mesh grain">
-      <Seo title="Pending Activation — LEAGUE Reviews" description="Your account is pending admin activation." />
+      <Seo title="Pending Activation — JTL Reviews" description="Your account is pending admin activation." />
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="glass rounded-[2rem] p-7 shadow-soft">
           <div className="flex items-start gap-4">
