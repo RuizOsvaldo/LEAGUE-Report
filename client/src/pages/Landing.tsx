@@ -17,7 +17,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-mesh grain">
       <Seo
-        title="LEAGUE Reviews — Monthly progress emails, simplified"
+        title="JTL Reviews — Monthly progress emails, simplified"
         description="Instructors write monthly student progress reviews, admins track compliance, and guardians leave service feedback."
       />
 
@@ -25,12 +25,12 @@ export default function Landing() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative grid h-11 w-11 place-items-center rounded-2xl border bg-gradient-to-br from-primary/20 via-accent/10 to-transparent shadow-sm">
-              <span className="font-display text-xl">Λ</span>
+              <span className="font-display text-xl">J</span>
               <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/10" />
             </div>
             <div>
               <div className="font-display text-lg leading-tight">
-                LEAGUE Reviews
+                JTL Reviews
               </div>
               <div className="text-xs text-muted-foreground">
                 Monthly instructor-to-guardian progress updates
