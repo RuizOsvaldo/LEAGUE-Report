@@ -39,7 +39,7 @@ export default function Landing() {
 
           <div className="flex items-center gap-2">
             <a
-              href="/api/login"
+              href="/login"
               data-testid="landing-login"
               className="inline-flex"
             >
@@ -67,7 +67,7 @@ export default function Landing() {
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <a
-                href="/api/login"
+                href="/login"
                 data-testid="landing-cta-login"
                 className="inline-flex"
               >
@@ -180,7 +180,7 @@ export default function Landing() {
             <div className="flex items-center gap-4">
               <a
                 className="hover:underline"
-                href="/api/login"
+                href="/login"
                 data-testid="landing-footer-login"
               >
                 Login

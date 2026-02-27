@@ -1,13 +1,19 @@
 import * as client from "openid-client";
-import { Strategy, type VerifyFunction } from "openid-client/passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import passport from "passport";
 import session from "express-session";
 import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
+import MemoryStore from "memorystore";
+import bcrypt from "bcryptjs";
 import { authStorage } from "./storage";
 
+const DEV_BYPASS = process.env.DEV_BYPASS_AUTH === "true";
+
+// Only used when REPL_ID is set (Replit environment)
 const getOidcConfig = memoize(
   async () => {
     return await client.discovery(
@@ -20,10 +26,22 @@ const getOidcConfig = memoize(
 
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
+
+  if (DEV_BYPASS) {
+    const MemStore = MemoryStore(session);
+    return session({
+      secret: process.env.SESSION_SECRET ?? "dev-secret",
+      store: new MemStore({ checkPeriod: sessionTtl }),
+      resave: false,
+      saveUninitialized: false,
+      cookie: { httpOnly: true, secure: false, maxAge: sessionTtl },
+    });
+  }
+
   const pgStore = connectPg(session);
   const sessionStore = new pgStore({
     conString: process.env.DATABASE_URL,
-    createTableIfMissing: false,
+    createTableIfMissing: true,
     ttl: sessionTtl,
     tableName: "sessions",
   });
@@ -32,46 +50,8 @@ export function getSession() {
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      maxAge: sessionTtl,
-    },
+    cookie: { httpOnly: true, secure: false, maxAge: sessionTtl },
   });
-}
-
-function updateUserSession(
-  user: any,
-  tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers
-) {
-  user.claims = tokens.claims();
-  user.access_token = tokens.access_token;
-  user.refresh_token = tokens.refresh_token;
-  user.expires_at = user.claims?.exp;
-}
-
-async function upsertUser(claims: any, user: any) {
-  const userId = claims["sub"];
-  const email = claims["email"];
-  
-  // Normalize email for comparison
-  const normalizedEmail = email?.toLowerCase().trim();
-  
-  // Check if this user should be an admin
-  const adminPerms = await authStorage.getAdminPermissions(normalizedEmail);
-  
-  await authStorage.upsertUser({
-    id: userId,
-    email: email,
-    firstName: claims["first_name"],
-    lastName: claims["last_name"],
-    profileImageUrl: claims["profile_image_url"],
-    isAdmin: !!adminPerms,
-  });
-
-  if (adminPerms) {
-    user.permissions = adminPerms;
-  }
 }
 
 export async function setupAuth(app: Express) {
@@ -80,95 +60,87 @@ export async function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  const config = await getOidcConfig();
+  if (DEV_BYPASS) {
+    console.log("[auth] DEV_BYPASS_AUTH=true — skipping auth setup");
+    passport.serializeUser((user: Express.User, cb) => cb(null, user));
+    passport.deserializeUser((user: Express.User, cb) => cb(null, user));
+    return;
+  }
 
-  const verify: VerifyFunction = async (
-    tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers,
-    verified: passport.AuthenticateCallback
-  ) => {
-    const user = {};
-    updateUserSession(user, tokens);
-    await upsertUser(tokens.claims(), user);
-    verified(null, user);
-  };
+  // Local (email + password) strategy
+  passport.use(
+    new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+      try {
+        const user = await authStorage.getUserByEmail(email.toLowerCase().trim());
+        if (!user || !user.passwordHash) {
+          return done(null, false, { message: "Invalid email or password" });
+        }
+        const valid = await bcrypt.compare(password, user.passwordHash);
+        if (!valid) {
+          return done(null, false, { message: "Invalid email or password" });
+        }
+        return done(null, { claims: { sub: user.id, email: user.email } });
+      } catch (err) {
+        return done(err);
+      }
+    })
+  );
 
-  // Keep track of registered strategies
-  const registeredStrategies = new Set<string>();
-
-  // Helper function to ensure strategy exists for a domain
-  const ensureStrategy = (domain: string) => {
-    const strategyName = `replitauth:${domain}`;
-    if (!registeredStrategies.has(strategyName)) {
-      const strategy = new Strategy(
+  // Google OAuth strategy
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    passport.use(
+      new GoogleStrategy(
         {
-          name: strategyName,
-          config,
-          scope: "openid email profile offline_access",
-          callbackURL: `https://${domain}/api/callback`,
+          clientID: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          callbackURL: "/api/auth/google/callback",
         },
-        verify
-      );
-      passport.use(strategy);
-      registeredStrategies.add(strategyName);
+        async (_accessToken, _refreshToken, profile, done) => {
+          try {
+            const email = profile.emails?.[0]?.value;
+            if (!email) return done(null, false);
+
+            let user = await authStorage.getUserByEmail(email.toLowerCase());
+            if (!user) {
+              user = await authStorage.upsertUser({
+                email: email.toLowerCase(),
+                firstName: profile.name?.givenName ?? null,
+                lastName: profile.name?.familyName ?? null,
+                profileImageUrl: profile.photos?.[0]?.value ?? null,
+              });
+            }
+            return done(null, { claims: { sub: user.id, email: user.email } });
+          } catch (err) {
+            return done(err as Error);
+          }
+        }
+      )
+    );
+  }
+
+  passport.serializeUser((user: any, cb) => cb(null, user.claims.sub));
+  passport.deserializeUser(async (id: string, cb) => {
+    try {
+      const user = await authStorage.getUser(id);
+      if (!user) return cb(null, false);
+      cb(null, { claims: { sub: user.id, email: user.email } });
+    } catch (err) {
+      cb(err);
     }
-  };
-
-  passport.serializeUser((user: Express.User, cb) => cb(null, user));
-  passport.deserializeUser((user: Express.User, cb) => cb(null, user));
-
-  app.get("/api/login", (req, res, next) => {
-    ensureStrategy(req.hostname);
-    passport.authenticate(`replitauth:${req.hostname}`, {
-      prompt: "login consent",
-      scope: ["openid", "email", "profile", "offline_access"],
-    })(req, res, next);
-  });
-
-  app.get("/api/callback", (req, res, next) => {
-    ensureStrategy(req.hostname);
-    passport.authenticate(`replitauth:${req.hostname}`, {
-      successReturnToOrRedirect: "/",
-      failureRedirect: "/api/login",
-    })(req, res, next);
-  });
-
-  app.get("/api/logout", (req, res) => {
-    req.logout(() => {
-      res.redirect(
-        client.buildEndSessionUrl(config, {
-          client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
-        }).href
-      );
-    });
   });
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
-  const user = req.user as any;
+  if (DEV_BYPASS) {
+    (req as any).user = {
+      claims: { sub: "dev-user-1", email: "dev@local.test" },
+    };
+    return next();
+  }
 
-  if (!req.isAuthenticated() || !user.expires_at) {
+  if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const now = Math.floor(Date.now() / 1000);
-  if (now <= user.expires_at) {
-    return next();
-  }
-
-  const refreshToken = user.refresh_token;
-  if (!refreshToken) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
-
-  try {
-    const config = await getOidcConfig();
-    const tokenResponse = await client.refreshTokenGrant(config, refreshToken);
-    updateUserSession(user, tokenResponse);
-    return next();
-  } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  return next();
 };

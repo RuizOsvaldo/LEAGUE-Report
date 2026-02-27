@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/Landing";
 import AppHome from "@/pages/AppHome";
+import LoginPage from "@/pages/LoginPage";
 
 import InstructorDashboard from "@/pages/instructor/InstructorDashboard";
 import InstructorReviews from "@/pages/instructor/InstructorReviews";
@@ -26,6 +27,9 @@ function Router() {
 
   return (
     <Switch>
+      {/* Auth */}
+      <Route path="/login" component={LoginPage} />
+
       {/* Public feedback page */}
       <Route path="/feedback/:reviewId" component={FeedbackPage} />
 
