@@ -136,15 +136,12 @@ export default function AppShell({
                 <aside className="w-full lg:w-[320px]">
                   <div className="flex items-center justify-between px-5 py-5 lg:justify-start lg:gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="relative grid h-10 w-10 place-items-center rounded-2xl border bg-gradient-to-br from-primary/20 via-accent/10 to-transparent shadow-sm">
-                        <span className="font-display text-lg" aria-hidden>
-                          J
-                        </span>
-                        <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/10" />
+                      <div className="relative h-10 w-10 overflow-hidden rounded-2xl border shadow-sm">
+                        <img src="/images/jtl_logo.png" alt="LEAGUE Report logo" className="h-full w-full object-cover" />
                       </div>
                       <div className="leading-tight">
                         <div className="font-display text-base" data-testid="app-brand-title">
-                          JTL Reviews
+                          LEAGUE Report
                         </div>
                         <div className="text-xs text-muted-foreground" data-testid="app-brand-subtitle">
                           Monthly progress, beautifully tracked

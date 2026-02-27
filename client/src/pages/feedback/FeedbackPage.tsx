@@ -29,7 +29,7 @@ export default function FeedbackPage() {
   return (
     <div className="min-h-screen bg-mesh grain">
       <Seo
-        title="Service Feedback — JTL Reviews"
+        title="Service Feedback — LEAGUE Report"
         description="Rate our service and leave a message for the team."
       />
 

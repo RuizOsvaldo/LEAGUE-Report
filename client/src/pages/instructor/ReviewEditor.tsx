@@ -176,7 +176,7 @@ export default function ReviewEditor() {
 
   return (
     <AppShell variant="instructor">
-      <Seo title="Review Editor — JTL Reviews" description="Draft and send a monthly review email." />
+      <Seo title="Review Editor — LEAGUE Report" description="Draft and send a monthly review email." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">

@@ -54,7 +54,7 @@ export default function TemplatesPage() {
 
   return (
     <AppShell variant="instructor">
-      <Seo title="Templates — JTL Reviews" description="Create and manage instructor review templates." />
+      <Seo title="Templates — LEAGUE Report" description="Create and manage instructor review templates." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">

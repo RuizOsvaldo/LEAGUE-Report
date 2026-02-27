@@ -1,8 +1,8 @@
-# JTL Reviews
+# LEAGUE Report
 
 ## Overview
 
-JTL Reviews is a full-stack web application for managing monthly instructor-to-guardian student progress reviews. Instructors write monthly progress emails for their assigned students, admins track compliance across instructors, and guardians can leave service feedback via public links. The app follows a multi-role pattern: instructors manage their own reviews and templates, admins oversee all instructors and compliance, and guardians interact through unauthenticated feedback pages.
+LEAGUE Report is a full-stack web application for managing monthly instructor-to-guardian student progress reviews. Instructors write monthly progress emails for their assigned students, admins track compliance across instructors, and guardians can leave service feedback via public links. The app follows a multi-role pattern: instructors manage their own reviews and templates, admins oversee all instructors and compliance, and guardians interact through unauthenticated feedback pages.
 
 ## User Preferences
 

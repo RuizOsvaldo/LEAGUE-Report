@@ -39,7 +39,7 @@ export default function InstructorDashboard() {
 
   return (
     <AppShell variant="instructor">
-      <Seo title={`Instructor Dashboard — ${monthLabel(month)} | JTL Reviews`} description="Monthly summary and review progress." />
+      <Seo title={`Instructor Dashboard — ${monthLabel(month)} | LEAGUE Report`} description="Monthly summary and review progress." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">

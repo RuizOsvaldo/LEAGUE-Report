@@ -6,7 +6,7 @@ import { ArrowLeft, FileX } from "lucide-react";
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-mesh grain">
-      <Seo title="404 — Page not found | JTL Reviews" />
+      <Seo title="404 — Page not found | LEAGUE Report" />
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="glass rounded-[2rem] p-8 shadow-soft animate-in">
           <div className="flex items-start gap-4">

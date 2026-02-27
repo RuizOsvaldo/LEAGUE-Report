@@ -17,20 +17,19 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-mesh grain">
       <Seo
-        title="JTL Reviews — Monthly progress emails, simplified"
+        title="LEAGUE Report — Monthly progress emails, simplified"
         description="Instructors write monthly student progress reviews, admins track compliance, and guardians leave service feedback."
       />
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative grid h-11 w-11 place-items-center rounded-2xl border bg-gradient-to-br from-primary/20 via-accent/10 to-transparent shadow-sm">
-              <span className="font-display text-xl">J</span>
-              <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/10" />
+            <div className="relative h-11 w-11 overflow-hidden rounded-2xl border shadow-sm">
+              <img src="/images/jtl_logo.png" alt="LEAGUE Report logo" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="font-display text-lg leading-tight">
-                JTL Reviews
+                LEAGUE Report
               </div>
               <div className="text-xs text-muted-foreground">
                 Monthly instructor-to-guardian progress updates

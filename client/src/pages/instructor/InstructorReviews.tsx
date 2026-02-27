@@ -55,7 +55,7 @@ export default function InstructorReviews() {
 
   return (
     <AppShell variant="instructor">
-      <Seo title={`Reviews — ${monthLabel(month)} | JTL Reviews`} description="Assigned student reviews, searchable and filterable." />
+      <Seo title={`Reviews — ${monthLabel(month)} | LEAGUE Report`} description="Assigned student reviews, searchable and filterable." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">

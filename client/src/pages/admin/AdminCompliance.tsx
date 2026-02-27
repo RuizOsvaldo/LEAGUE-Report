@@ -33,7 +33,7 @@ export default function AdminCompliance() {
 
   return (
     <AppShell variant="admin">
-      <Seo title={`Admin — Compliance (${monthLabel(month)}) | JTL Reviews`} description="Identify instructors who haven't completed monthly reviews." />
+      <Seo title={`Admin — Compliance (${monthLabel(month)}) | LEAGUE Report`} description="Identify instructors who haven't completed monthly reviews." />
 
       <div className="animate-in">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
