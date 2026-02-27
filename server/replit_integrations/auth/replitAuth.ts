@@ -87,12 +87,16 @@ export async function setupAuth(app: Express) {
   );
 
   // Google OAuth strategy
-  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  const gid = process.env.GOOGLE_CLIENT_ID ?? "";
+  const gsecret = process.env.GOOGLE_CLIENT_SECRET ?? "";
+  console.log(`[auth] Google client ID loaded: ${gid ? gid.slice(0, 12) + "..." : "NOT SET"}`);
+  console.log(`[auth] Google client secret loaded: ${gsecret ? "yes (length " + gsecret.length + ")" : "NOT SET"}`);
+  if (gid && gsecret) {
     passport.use(
       new GoogleStrategy(
         {
-          clientID: process.env.GOOGLE_CLIENT_ID,
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          clientID: gid,
+          clientSecret: gsecret,
           callbackURL: "/api/auth/google/callback",
         },
         async (_accessToken, _refreshToken, profile, done) => {

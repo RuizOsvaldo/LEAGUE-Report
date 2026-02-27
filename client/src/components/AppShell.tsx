@@ -172,6 +172,23 @@ export default function AppShell({
                       ))}
                     </div>
 
+                    {user?.isAdmin && (
+                      <>
+                        <div className="px-2 pt-5">
+                          <Separator className="bg-sidebar-border/70" />
+                        </div>
+                        <div className="pt-3">
+                          <NavItem
+                            href={variant === "admin" ? "/instructor" : "/admin"}
+                            icon={variant === "admin" ? Gauge : Shield}
+                            label={variant === "admin" ? "Instructor Workspace" : "Admin Console"}
+                            active={false}
+                            testId="nav-switch-role"
+                          />
+                        </div>
+                      </>
+                    )}
+
                     <div className="px-2 pt-5">
                       <Separator className="bg-sidebar-border/70" />
                     </div>

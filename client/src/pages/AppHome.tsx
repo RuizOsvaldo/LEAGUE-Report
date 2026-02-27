@@ -13,7 +13,7 @@ import { ArrowRight, Shield } from "lucide-react";
 
 export default function AppHome() {
   const { toast } = useToast();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const status = useInstructorStatus();
   const [, setLocation] = useLocation();
 
@@ -56,7 +56,8 @@ export default function AppHome() {
     );
   }
 
-  if (!isActive) {
+  // Admins always have full access regardless of instructor activation status
+  if (!isActive && !user?.isAdmin) {
     return <PendingActivation onRefresh={() => status.refetch()} isRefreshing={status.isRefetching} />;
   }
 
